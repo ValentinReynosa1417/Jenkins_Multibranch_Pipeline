@@ -1,33 +1,50 @@
 pipeline {
         agent any
-                stages {
-                        stage('One') {
-                                steps {
-                                        script {
-                                              env.EXECUTE="True"
-                                        }
-                                }
-
-                                steps {
-                                        sh ' echo "Updating Second Stage" '
-                                }
-                        }
-
-
-                        stage('Two') {
-                                steps {
-                                        sh echo ${EXECUTE}
-                                }
-
-                                when{
-                                        equas expected: true, actual STAGE 2
-                                }
-                        } 
-
-                        stage('Three') {
-                                steps {
-                                        sh 'echo "Step Three" '
+        stages {
+                stage('Stage first') {
+                        steps {
+                                script {
+                                        echo "Building"
+                                        env.EXECUTE = 'true'
                                 }
                         }
                 }
+
+ 
+
+                stage('Stage second') {
+                        when {
+                                expression {
+                                        env.EXECUTE == 'true'
+                                }
+                        }
+
+ 
+
+                        steps {
+                                script {
+                                        echo "Updating second stage"
+                                        echo "${env.EXECUTE}"
+                                }
+                        }
+                }
+
+ 
+
+                stage('Stage third') {
+                        when {
+                                expression {
+                                        env.EXECUTE == 'false'
+                                }
+                        }
+                        steps {
+                                script {
+                                        echo "Deploying yes"
+                                }
+                        }
+
+ 
+
+                }
+        }
 }
