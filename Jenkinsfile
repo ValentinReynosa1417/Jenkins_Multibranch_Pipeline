@@ -3,7 +3,9 @@ pipeline {
                 stages {
                         stage('One') {
                                 steps {
-                                        env.EXECUTE="True"
+                                        script {
+                                              env.EXECUTE="True"
+                                        }
                                 }
 
                                 steps {
